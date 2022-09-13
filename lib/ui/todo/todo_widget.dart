@@ -4,6 +4,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class TodoWidget extends StatelessWidget {
   const TodoWidget({super.key});
 
+  void showForm(BuildContext context) {
+    Navigator.of(context).pushNamed('/todo/form');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +17,7 @@ class TodoWidget extends StatelessWidget {
       ),
       body: const GroupList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => showForm(context),
         child: const Icon(Icons.add),
       ),
     );
@@ -48,8 +52,8 @@ class GroupListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Slidable(
-      startActionPane: ActionPane(
+    return Slidable(
+      endActionPane: const ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
@@ -59,38 +63,12 @@ class GroupListRowWidget extends StatelessWidget {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Color(0xFF21B7CA),
-            foregroundColor: Colors.white,
-            icon: Icons.share,
-            label: 'Share',
-          ),
-        ],
-      ),
-      endActionPane: ActionPane(
-        motion: ScrollMotion(),
-        children: [
-          SlidableAction(
-            flex: 2,
-            onPressed: null,
-            backgroundColor: Color(0xFF7BC043),
-            foregroundColor: Colors.white,
-            icon: Icons.archive,
-            label: 'Archive',
-          ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Color(0xFF0392CF),
-            foregroundColor: Colors.white,
-            icon: Icons.save,
-            label: 'Save',
-          ),
         ],
       ),
       child: ListTile(
-        title: Text('data'),
-        trailing: Icon(Icons.chevron_right),
+        title: const Text('data'),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () {},
       ),
     );
   }
