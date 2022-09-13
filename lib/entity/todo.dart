@@ -7,6 +7,9 @@ class Todo {
   @HiveField(0)
   String name;
 
+  @HiveField(1)
+  HiveList? tasks;
+
   Todo({
     required this.name,
   });

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_list/ui/task_form/task_form.dart';
+import 'package:todo_list/ui/tasks/task_widget.dart';
 import 'package:todo_list/ui/todo/todo_widget.dart';
 import 'package:todo_list/ui/todo_form/todo_form.dart';
 
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/todo': (context) => const TodoWidget(),
         '/todo/form': (context) => const TodoForm(),
+        '/todo/tasks': (context) => const TaskWidget(),
+        '/todo/tasks/form': (context) => const TaskForm(),
       },
       initialRoute: '/todo',
     );

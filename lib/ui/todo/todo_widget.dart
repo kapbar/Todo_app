@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_list/ui/todo/todo_widget_model.dart';
 
-class TodoWidget extends StatelessWidget {
+class TodoWidget extends StatefulWidget {
   const TodoWidget({super.key});
 
-  void showForm(BuildContext context) {
-    Navigator.of(context).pushNamed('/todo/form');
+  @override
+  State<TodoWidget> createState() => _TodoWidgetState();
+}
+
+class _TodoWidgetState extends State<TodoWidget> {
+  final _model = TodoWidgetModel();
+  @override
+  Widget build(BuildContext context) {
+    return TodoWidgetModelProvider(
+      model: _model,
+      child: const TodoWidgetBody(),
+    );
   }
+}
+
+class TodoWidgetBody extends StatelessWidget {
+  const TodoWidgetBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +32,23 @@ class TodoWidget extends StatelessWidget {
       ),
       body: const GroupList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showForm(context),
+        onPressed: () =>
+            TodoWidgetModelProvider.read(context)?.model.showForm(context),
         child: const Icon(Icons.add),
       ),
     );
   }
 }
 
-class GroupList extends StatefulWidget {
+class GroupList extends StatelessWidget {
   const GroupList({super.key});
 
   @override
-  State<GroupList> createState() => _GroupListState();
-}
-
-class _GroupListState extends State<GroupList> {
-  @override
   Widget build(BuildContext context) {
+    final todoCount =
+        TodoWidgetModelProvider.watch(context)?.model.todo.length ?? 0;
     return ListView.separated(
-      itemCount: 100,
+      itemCount: todoCount,
       itemBuilder: (context, index) {
         return GroupListRowWidget(index: index);
       },
@@ -52,23 +65,25 @@ class GroupListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = TodoWidgetModelProvider.read(context)!.model;
+    final todo = model.todo[index];
     return Slidable(
-      endActionPane: const ActionPane(
-        motion: ScrollMotion(),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: null,
-            backgroundColor: Color(0xFFFE4A49),
+            backgroundColor: Colors.red,
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Delete',
+            onPressed: (_) => model.deleteTodo(index),
           ),
         ],
       ),
       child: ListTile(
-        title: const Text('data'),
+        title: Text(todo.name),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () {},
+        onTap: () => model.showTasks(context, index),
       ),
     );
   }

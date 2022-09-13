@@ -5,15 +5,17 @@ import 'package:todo_list/entity/todo.dart';
 class TodoFormModel {
   var todoName = '';
 
-  void saveTodo(BuildContext context) async {
+  void saveTodo(BuildContext context, [bool mounted = true]) async {
     if (todoName.isEmpty) return;
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapter(TodoAdapter());
     }
-    Navigator.of(context).pop();
+
     final box = await Hive.openBox<Todo>('todo_box');
     final todo = Todo(name: todoName);
     await box.add(todo);
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 }
 
