@@ -40,6 +40,6 @@ class TodoFormModelProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(TodoFormModelProvider oldWidget) {
-    return true;
+    return false;
   }
 }
