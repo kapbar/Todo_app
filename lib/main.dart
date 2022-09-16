@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_list/ui/task_form/task_form.dart';
-import 'package:todo_list/ui/tasks/task_widget.dart';
-import 'package:todo_list/ui/todo/todo_widget.dart';
-import 'package:todo_list/ui/todo_form/todo_form.dart';
+import 'package:todo_list/ui/navigation/main_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +10,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static final mainNavigation = MainNavigation();
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +20,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: {
-        '/todo': (context) => const TodoWidget(),
-        '/todo/form': (context) => const TodoForm(),
-        '/todo/tasks': (context) => const TaskWidget(),
-        '/todo/tasks/form': (context) => const TaskForm(),
-      },
-      initialRoute: '/todo',
+      routes: mainNavigation.routes,
+      onGenerateRoute: mainNavigation.onGenerateRoute,
+      initialRoute: mainNavigation.initialRoute,
     );
   }
 }

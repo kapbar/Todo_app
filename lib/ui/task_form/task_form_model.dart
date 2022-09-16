@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
+import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/task.dart';
-import 'package:todo_list/entity/todo.dart';
 
 class TaskFormModel {
   int todoKey;
@@ -14,19 +12,10 @@ class TaskFormModel {
 
   void saveTask(BuildContext context, [bool mounted = true]) async {
     if (taskText.isEmpty) return;
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TodoAdapter());
-    }
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-    final taskBox = await Hive.openBox<Task>('task_box');
     final task = Task(text: taskText, isDone: false);
-    await taskBox.add(task);
-
-    final todoBox = await Hive.openBox<Todo>('todo_box');
-    final todo = todoBox.get(todoKey);
-    todo?.addTask(taskBox, task);
+    final box = await BoxManager.instance.openTaskBox(todoKey);
+    await box.add(task);
+    await BoxManager.instance.closeBox(box);
     if (!mounted) return;
     Navigator.of(context).pop();
   }

@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/ui/task_form/task_form_model.dart';
 
 class TaskForm extends StatefulWidget {
-  const TaskForm({super.key});
+  final int todoKey;
+  const TaskForm({super.key, required this.todoKey});
 
   @override
   State<TaskForm> createState() => _TaskFormState();
 }
 
 class _TaskFormState extends State<TaskForm> {
-  TaskFormModel? _model;
+  late final TaskFormModel _model;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_model == null) {
-      final todoKey = ModalRoute.of(context)!.settings.arguments as int;
-      _model = TaskFormModel(todoKey: todoKey);
-    }
+  void initState() {
+    super.initState();
+    _model = TaskFormModel(todoKey: widget.todoKey);
   }
 
   @override
   Widget build(BuildContext context) {
     return TaskFormModelProvider(
-      model: _model!,
+      model: _model,
       child: const TaskFormBody(),
     );
   }

@@ -2,31 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_list/ui/tasks/task_widget_model.dart';
 
+class TaskWidgetConfiguration {
+  final int todoKey;
+  final String title;
+
+  TaskWidgetConfiguration(this.todoKey, this.title);
+}
+
 class TaskWidget extends StatefulWidget {
-  const TaskWidget({super.key});
+  final TaskWidgetConfiguration configuration;
+  const TaskWidget({super.key, required this.configuration});
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  TaskWidgetModel? _model;
+  late final TaskWidgetModel _model;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_model == null) {
-      final todoKey = ModalRoute.of(context)!.settings.arguments as int;
-      _model = TaskWidgetModel(todoKey: todoKey);
-    }
+  void initState() {
+    super.initState();
+    _model = TaskWidgetModel(configuration: widget.configuration);
   }
 
   @override
   Widget build(BuildContext context) {
     return TaskWidgetModelProvider(
-      model: _model!,
+      model: _model,
       child: const TaskWidgetBody(),
     );
+  }
+
+  @override
+  void dispose() async {
+    await _model.dispose();
+    super.dispose();
   }
 }
 
@@ -36,7 +47,7 @@ class TaskWidgetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = TaskWidgetModelProvider.watch(context)?.model;
-    final title = model?.todo?.name ?? 'Todo';
+    final title = model?.configuration.title ?? 'Todo';
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -78,6 +89,12 @@ class TaskListRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = TaskWidgetModelProvider.read(context)!.model;
     final task = model.tasks[index];
+    final style = task.isDone
+        ? const TextStyle(
+            color: Colors.black45,
+            decoration: TextDecoration.lineThrough,
+          )
+        : null;
     return Slidable(
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
@@ -92,9 +109,11 @@ class TaskListRowWidget extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        title: Text(task.text),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () {},
+        title: Text(
+          task.text,
+          style: style,
+        ),
+        onTap: () => model.doneToggle(index),
       ),
     );
   }

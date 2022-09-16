@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/todo.dart';
 
 class TodoFormModel {
@@ -7,13 +7,10 @@ class TodoFormModel {
 
   void saveTodo(BuildContext context, [bool mounted = true]) async {
     if (todoName.isEmpty) return;
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TodoAdapter());
-    }
-
-    final box = await Hive.openBox<Todo>('todo_box');
+    final box = await BoxManager.instance.openTodoBox();
     final todo = Todo(name: todoName);
     await box.add(todo);
+    await BoxManager.instance.closeBox(box);
     if (!mounted) return;
     Navigator.of(context).pop();
   }

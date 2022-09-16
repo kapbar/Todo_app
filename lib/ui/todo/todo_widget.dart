@@ -18,6 +18,12 @@ class _TodoWidgetState extends State<TodoWidget> {
       child: const TodoWidgetBody(),
     );
   }
+
+  @override
+  void dispose() async {
+    await _model.dispose();
+    super.dispose();
+  }
 }
 
 class TodoWidgetBody extends StatelessWidget {

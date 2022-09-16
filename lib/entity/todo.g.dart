@@ -18,17 +18,15 @@ class TodoAdapter extends TypeAdapter<Todo> {
     };
     return Todo(
       name: fields[0] as String,
-    )..tasks = (fields[1] as HiveList?)?.castHiveList();
+    );
   }
 
   @override
   void write(BinaryWriter writer, Todo obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.tasks);
+      ..writeByte(0)
+      ..write(obj.name);
   }
 
   @override
