@@ -23,8 +23,9 @@ class BoxManager {
       _boxCounter.remove(box.name);
       return;
     }
-    final count = _boxCounter[box.name] ?? 1;
-    _boxCounter[box.name] = count - 1;
+    var count = _boxCounter[box.name] ?? 1;
+    count -= 1;
+    _boxCounter[box.name] = count;
     if (count > 0) return;
 
     _boxCounter.remove(box.name);

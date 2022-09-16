@@ -2,11 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/todo.dart';
 
-class TodoFormModel {
-  var todoName = '';
+class TodoFormModel extends ChangeNotifier {
+  var _todoName = '';
+  String? errorText;
+
+  set todoName(String value) {
+    if (errorText != null && value.trim().isNotEmpty) {
+      errorText = null;
+      notifyListeners();
+    }
+    _todoName = value;
+  }
 
   void saveTodo(BuildContext context, [bool mounted = true]) async {
-    if (todoName.isEmpty) return;
+    final todoName = _todoName.trim();
+    if (todoName.isEmpty) {
+      errorText = 'Name Todo is not a null';
+      notifyListeners();
+      return;
+    }
     final box = await BoxManager.instance.openTodoBox();
     final todo = Todo(name: todoName);
     await box.add(todo);
@@ -16,13 +30,16 @@ class TodoFormModel {
   }
 }
 
-class TodoFormModelProvider extends InheritedWidget {
+class TodoFormModelProvider extends InheritedNotifier {
   final TodoFormModel model;
   const TodoFormModelProvider({
     super.key,
     required Widget child,
     required this.model,
-  }) : super(child: child);
+  }) : super(
+          child: child,
+          notifier: model,
+        );
 
   static TodoFormModelProvider? watch(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<TodoFormModelProvider>();
@@ -33,10 +50,5 @@ class TodoFormModelProvider extends InheritedWidget {
         .getElementForInheritedWidgetOfExactType<TodoFormModelProvider>()
         ?.widget;
     return widget is TodoFormModelProvider ? widget : null;
-  }
-
-  @override
-  bool updateShouldNotify(TodoFormModelProvider oldWidget) {
-    return false;
   }
 }

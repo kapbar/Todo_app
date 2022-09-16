@@ -37,7 +37,8 @@ class TodoFormBody extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => TodoFormModelProvider.read(context)?.model.saveTodo(context),
+        onPressed: () =>
+            TodoFormModelProvider.read(context)?.model.saveTodo(context),
         child: const Icon(Icons.done),
       ),
     );
@@ -49,12 +50,13 @@ class TodoName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = TodoFormModelProvider.read(context)?.model;
+    final model = TodoFormModelProvider.watch(context)?.model;
     return TextField(
       autofocus: true,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
         hintText: 'Name Todo',
+        errorText: model?.errorText,
       ),
       onEditingComplete: () => model?.saveTodo(context),
       onChanged: (value) => model?.todoName = value,
