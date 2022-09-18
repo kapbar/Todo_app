@@ -4,8 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/todo.dart';
 import 'package:todo_list/ui/navigation/main_navigation.dart';
-import 'package:todo_list/ui/tasks/task_widget.dart';
-
 class TodoWidgetModel extends ChangeNotifier {
   TodoWidgetModel() {
     _setUp();
@@ -17,25 +15,11 @@ class TodoWidgetModel extends ChangeNotifier {
   List<Todo> get todo => _todo.toList();
 
   void showForm(BuildContext context) {
-    Navigator.of(context).pushNamed(MainNavigationRouteNames.todoForm);
-  }
-
-  Future<void> showTasks(BuildContext context, int index,
-      [bool mounted = true]) async {
-    final todo = (await _box).getAt(index);
-    if (todo != null) {
-      final configuration = TaskWidgetConfiguration(todo.key as int, todo.name);
-      if (!mounted) return;
-      Navigator.of(context)
-          .pushNamed(MainNavigationRouteNames.tasks, arguments: configuration);
-    }
+    Navigator.of(context).pushNamed(MainNavigationRouteNames.goals);
   }
 
   Future<void> deleteTodo(int index) async {
     final box = await _box;
-    final todoKey = box.keyAt(index) as int;
-    final taskBoxName = BoxManager.instance.makeTaskBoxName(todoKey);
-    await Hive.deleteBoxFromDisk(taskBoxName);
     await box.deleteAt(index);
   }
 
@@ -45,7 +29,7 @@ class TodoWidgetModel extends ChangeNotifier {
   }
 
   Future<void> _setUp() async {
-    _box = BoxManager.instance.openTodoBox();
+    _box = BoxManager.instance.openPersonalBox();
     await _readTodoFormHive();
     _listenable = (await _box).listenable();
     _listenable?.addListener(_readTodoFormHive);

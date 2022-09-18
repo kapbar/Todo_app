@@ -1,5 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_list/entity/task.dart';
 import 'package:todo_list/entity/todo.dart';
 
 class BoxManager {
@@ -8,15 +7,9 @@ class BoxManager {
 
   BoxManager._();
 
-  Future<Box<Todo>> openTodoBox() async {
-    return _openBox('todo_box', 0, TodoAdapter());
+  Future<Box<Todo>> openPersonalBox() async {
+    return _openBox('todo_personal', 0, TodoAdapter());
   }
-
-  Future<Box<Task>> openTaskBox(int todoKey) async {
-    return _openBox(makeTaskBoxName(todoKey), 1, TaskAdapter());
-  }
-
-  String makeTaskBoxName(int todoKey) => 'task_box_$todoKey';
 
   Future<void> closeBox<T>(Box<T> box) async {
     if (!box.isOpen) {

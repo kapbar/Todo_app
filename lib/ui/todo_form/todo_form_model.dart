@@ -21,7 +21,7 @@ class TodoFormModel extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    final box = await BoxManager.instance.openTodoBox();
+    final box = await BoxManager.instance.openPersonalBox();
     final todo = Todo(name: todoName);
     await box.add(todo);
     await BoxManager.instance.closeBox(box);

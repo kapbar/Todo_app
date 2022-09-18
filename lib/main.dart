@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_list/constants/app_colors.dart';
 import 'package:todo_list/ui/navigation/main_navigation.dart';
 
 void main() async {
@@ -16,12 +17,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Блокнот-Записки',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: AppColors.primary,
+          backgroundColor: AppColors.backgroundLite,
+          cardColor: AppColors.backgroundLite,
+        ),
       ),
       routes: mainNavigation.routes,
-      onGenerateRoute: mainNavigation.onGenerateRoute,
       initialRoute: mainNavigation.initialRoute,
     );
   }
