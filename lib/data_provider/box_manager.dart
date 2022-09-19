@@ -8,7 +8,19 @@ class BoxManager {
   BoxManager._();
 
   Future<Box<Todo>> openPersonalBox() async {
-    return _openBox('todo_personal', 0, TodoAdapter());
+    return _openBox('todo_personall', 0, TodoAdapter());
+  }
+
+  Future<Box<Todo>> openWorkBox() async {
+    return _openBox('todo_work', 0, TodoAdapter());
+  }
+
+  Future<Box<Todo>> openShopBox() async {
+    return _openBox('todo_shop', 0, TodoAdapter());
+  }
+
+  Future<Box<Todo>> openOtherBox() async {
+    return _openBox('todo_other', 0, TodoAdapter());
   }
 
   Future<void> closeBox<T>(Box<T> box) async {

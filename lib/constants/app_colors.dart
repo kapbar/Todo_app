@@ -17,5 +17,5 @@ abstract class AppColors {
     },
   );
   static const backgroundLite = Color.fromARGB(255, 255, 237, 237);
-  static const secendary = Color.fromARGB(255, 166, 175, 193);
+  static const secendary = Color.fromARGB(255, 136, 141, 151);
 }

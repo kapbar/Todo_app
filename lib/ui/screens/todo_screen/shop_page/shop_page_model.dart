@@ -3,24 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/todo.dart';
-import 'package:todo_list/ui/navigation/main_navigation.dart';
-class TodoWidgetModel extends ChangeNotifier {
-  TodoWidgetModel() {
+
+class ShopPageModel extends ChangeNotifier {
+  ShopPageModel() {
     _setUp();
   }
-
   late final Future<Box<Todo>> _box;
   ValueListenable<Object>? _listenable;
   var _todo = <Todo>[];
   List<Todo> get todo => _todo.toList();
 
-  void showForm(BuildContext context) {
-    Navigator.of(context).pushNamed(MainNavigationRouteNames.goals);
-  }
-
   Future<void> deleteTodo(int index) async {
     final box = await _box;
     await box.deleteAt(index);
+  }
+
+  Future<void> doneToggle(int index) async {
+    final currentState = _todo[index].isDone;
+    _todo[index].isDone = !currentState;
+    await _todo[index].save();
+    notifyListeners();
   }
 
   Future<void> _readTodoFormHive() async {
@@ -29,7 +31,7 @@ class TodoWidgetModel extends ChangeNotifier {
   }
 
   Future<void> _setUp() async {
-    _box = BoxManager.instance.openPersonalBox();
+    _box = BoxManager.instance.openShopBox();
     await _readTodoFormHive();
     _listenable = (await _box).listenable();
     _listenable?.addListener(_readTodoFormHive);
@@ -38,14 +40,15 @@ class TodoWidgetModel extends ChangeNotifier {
   @override
   Future<void> dispose() async {
     _listenable?.removeListener(_readTodoFormHive);
-    await BoxManager.instance.closeBox(await _box);
+    final box = await _box;
+    await BoxManager.instance.closeBox(box);
     super.dispose();
   }
 }
 
-class TodoWidgetModelProvider extends InheritedNotifier {
-  final TodoWidgetModel model;
-  const TodoWidgetModelProvider({
+class ShopPageModelProvider extends InheritedNotifier {
+  final ShopPageModel model;
+  const ShopPageModelProvider({
     super.key,
     required Widget child,
     required this.model,
@@ -54,15 +57,15 @@ class TodoWidgetModelProvider extends InheritedNotifier {
           notifier: model,
         );
 
-  static TodoWidgetModelProvider? watch(BuildContext context) {
+  static ShopPageModelProvider? watch(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<TodoWidgetModelProvider>();
+        .dependOnInheritedWidgetOfExactType<ShopPageModelProvider>();
   }
 
-  static TodoWidgetModelProvider? read(BuildContext context) {
+  static ShopPageModelProvider? read(BuildContext context) {
     final widget = context
-        .getElementForInheritedWidgetOfExactType<TodoWidgetModelProvider>()
+        .getElementForInheritedWidgetOfExactType<ShopPageModelProvider>()
         ?.widget;
-    return widget is TodoWidgetModelProvider ? widget : null;
+    return widget is ShopPageModelProvider ? widget : null;
   }
 }

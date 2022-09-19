@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/todo.dart';
 
-class TodoFormModel extends ChangeNotifier {
+class WorkTodoFormModel extends ChangeNotifier {
   var _todoName = '';
   String? errorText;
 
@@ -17,12 +17,12 @@ class TodoFormModel extends ChangeNotifier {
   void saveTodo(BuildContext context, [bool mounted = true]) async {
     final todoName = _todoName.trim();
     if (todoName.isEmpty) {
-      errorText = 'Name Todo is not a null';
+      errorText = 'Напишите название задачи';
       notifyListeners();
       return;
     }
-    final box = await BoxManager.instance.openPersonalBox();
-    final todo = Todo(name: todoName);
+    final box = await BoxManager.instance.openWorkBox();
+    final todo = Todo(name: todoName, isDone: false);
     await box.add(todo);
     await BoxManager.instance.closeBox(box);
     if (!mounted) return;
@@ -30,9 +30,9 @@ class TodoFormModel extends ChangeNotifier {
   }
 }
 
-class TodoFormModelProvider extends InheritedNotifier {
-  final TodoFormModel model;
-  const TodoFormModelProvider({
+class WorkTodoFormModelProvider extends InheritedNotifier {
+  final WorkTodoFormModel model;
+  const WorkTodoFormModelProvider({
     super.key,
     required Widget child,
     required this.model,
@@ -41,14 +41,14 @@ class TodoFormModelProvider extends InheritedNotifier {
           notifier: model,
         );
 
-  static TodoFormModelProvider? watch(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<TodoFormModelProvider>();
+  static WorkTodoFormModelProvider? watch(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<WorkTodoFormModelProvider>();
   }
 
-  static TodoFormModelProvider? read(BuildContext context) {
+  static WorkTodoFormModelProvider? read(BuildContext context) {
     final widget = context
-        .getElementForInheritedWidgetOfExactType<TodoFormModelProvider>()
+        .getElementForInheritedWidgetOfExactType<WorkTodoFormModelProvider>()
         ?.widget;
-    return widget is TodoFormModelProvider ? widget : null;
+    return widget is WorkTodoFormModelProvider ? widget : null;
   }
 }

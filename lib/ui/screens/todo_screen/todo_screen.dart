@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/constants/app_colors.dart';
-import 'package:todo_list/ui/screens/todo_screen/todo_pages/personal_page.dart';
+import 'package:todo_list/ui/screens/todo_screen/other_page/other_page.dart';
+import 'package:todo_list/ui/screens/todo_screen/personal_page/personal_page.dart';
+import 'package:todo_list/ui/screens/todo_screen/shop_page/shop_page.dart';
+import 'package:todo_list/ui/screens/todo_screen/work_page/work_page.dart';
 import 'package:todo_list/widgets/app_nav_bar.dart';
+import 'package:todo_list/widgets/tab_item_widget.dart';
 
-class TodoScreen extends StatefulWidget {
+class TodoScreen extends StatelessWidget {
   const TodoScreen({super.key});
 
-  @override
-  State<TodoScreen> createState() => _TodoScreenState();
-}
-
-class _TodoScreenState extends State<TodoScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -20,7 +19,13 @@ class _TodoScreenState extends State<TodoScreen> {
         bottomNavigationBar: const AppNavBar(current: 0),
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () => Drawer(
+              backgroundColor: AppColors.backgroundLite,
+              child: Container(
+                height: 200,
+                width: 200,
+              ),
+            ),
             icon: const Icon(
               Icons.dehaze,
               color: AppColors.secendary,
@@ -77,40 +82,14 @@ class _TodoScreenState extends State<TodoScreen> {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const PersonalTodoPage(),
-            Container(),
-            Container(
-              color: Colors.blue,
-            ),
-            Container(
-              color: Colors.green,
-            ),
+            PersonalTodoPage(),
+            WorkTodoPage(),
+            ShopTodoPage(),
+            OtherTodoPage(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class TabItemWidget extends StatelessWidget {
-  final String title;
-  const TabItemWidget({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 11.0, vertical: 4),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black87),
-        borderRadius: const BorderRadius.all(Radius.circular(9)),
-      ),
-      child: Center(
-        child: Text(title),
       ),
     );
   }

@@ -43,18 +43,16 @@ class NotesScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
           children: const [
             NotesWidget(title: 'Дневник'),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             NotesWidget(title: 'Дневник успеха'),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             NotesWidget(title: 'Благодарности'),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             NotesWidget(title: 'Мои ощибки'),
-            SizedBox(height: 10),
+            SizedBox(height: 15),
             NotesWidget(title: 'Дневник счастья'),
           ],
         ),

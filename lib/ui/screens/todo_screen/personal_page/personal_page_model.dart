@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_list/constants/app_colors.dart';
 import 'package:todo_list/data_provider/box_manager.dart';
 import 'package:todo_list/entity/todo.dart';
-import 'package:todo_list/ui/screens/todo_screen/todo_pages/personal_page.dart';
 
 class PersonalPageModel extends ChangeNotifier {
   PersonalPageModel() {
@@ -15,34 +13,16 @@ class PersonalPageModel extends ChangeNotifier {
   var _todo = <Todo>[];
   List<Todo> get todo => _todo.toList();
 
-  void showForm(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10),
-        ),
-      ),
-      builder: (context) => ColoredBox(
-        color: AppColors.backgroundLite,
-        child: DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.4,
-          minChildSize: 0.32,
-          maxChildSize: 0.9,
-          builder: (context, scrollcontroller) => SingleChildScrollView(
-            controller: scrollcontroller,
-            child: const PersonalTodoForm(),
-          ),
-        ),
-      ),
-    );
-  }
-
   Future<void> deleteTodo(int index) async {
     final box = await _box;
     await box.deleteAt(index);
+  }
+
+  Future<void> doneToggle(int index) async {
+    final currentState = _todo[index].isDone;
+    _todo[index].isDone = !currentState;
+    await _todo[index].save();
+    notifyListeners();
   }
 
   Future<void> _readTodoFormHive() async {

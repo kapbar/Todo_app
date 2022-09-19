@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/ui/screens/goals_screen/goals_screen.dart';
+import 'package:todo_list/ui/screens/notes_screen/notes_screen.dart';
 import 'package:todo_list/ui/screens/todo_screen/todo_screen.dart';
-import 'package:todo_list/ui/todo_form/todo_form.dart';
 
 abstract class MainNavigationRouteNames {
   static const todo = 'todo';
@@ -11,8 +12,8 @@ abstract class MainNavigationRouteNames {
 class MainNavigation {
   final initialRoute = MainNavigationRouteNames.todo;
   final routes = <String, Widget Function(BuildContext)>{
-    MainNavigationRouteNames.todo: (context) =>  const TodoScreen(),
-    MainNavigationRouteNames.goals: (context) => const TodoForm(),
-    MainNavigationRouteNames.notes: (context) => const TodoForm(),
+    MainNavigationRouteNames.todo: (context) => const TodoScreen(),
+    MainNavigationRouteNames.goals: (context) => const GoalsScreen(),
+    MainNavigationRouteNames.notes: (context) => const NotesScreen(),
   };
 }
