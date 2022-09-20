@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/constants/app_colors.dart';
 import 'package:todo_list/widgets/app_nav_bar.dart';
+import 'package:todo_list/widgets/drawer_widget.dart';
 
 class NotesScreen extends StatelessWidget {
   const NotesScreen({super.key});
@@ -8,13 +9,11 @@ class NotesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerWidget(),
       bottomNavigationBar: const AppNavBar(current: 2),
       backgroundColor: AppColors.backgroundLite,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.dehaze, color: AppColors.secendary),
-        ),
+      
         title: const Text(
           'Заметки',
           style: TextStyle(

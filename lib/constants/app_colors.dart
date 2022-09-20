@@ -16,6 +16,6 @@ abstract class AppColors {
       900: Color(0XFFFFBE7A),
     },
   );
-  static const backgroundLite = Color.fromARGB(255, 255, 237, 237);
+  static const backgroundLite = Color.fromARGB(255, 249, 239, 239);
   static const secendary = Color.fromARGB(255, 136, 141, 151);
 }

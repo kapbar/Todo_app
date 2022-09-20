@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/constants/app_colors.dart';
 import 'package:todo_list/ui/screens/goals_screen/goals_screen.dart';
 import 'package:todo_list/ui/screens/notes_screen/notes_screen.dart';
-import 'package:todo_list/ui/screens/settings_screen/settings_screen.dart';
+import 'package:todo_list/ui/screens/finance_screen/finance_screen.dart';
 import 'package:todo_list/ui/screens/todo_screen/todo_screen.dart';
 
 class AppNavBar extends StatelessWidget {
@@ -56,8 +56,8 @@ class AppNavBar extends StatelessWidget {
             label: 'Заметки',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            label: 'Настройки',
+            icon: Icon(Icons.monetization_on_outlined),
+            label: 'Финансы',
           ),
         ],
         onTap: (index) {
@@ -79,7 +79,7 @@ class AppNavBar extends StatelessWidget {
             );
           } else if (index == 3) {
             Navigator.of(context).pushAndRemoveUntil(
-              _createRoute(const SettingsScreen()),
+              _createRoute(const FinanceScreen()),
               (route) => false,
             );
           }

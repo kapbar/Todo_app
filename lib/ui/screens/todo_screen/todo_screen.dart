@@ -5,6 +5,7 @@ import 'package:todo_list/ui/screens/todo_screen/personal_page/personal_page.dar
 import 'package:todo_list/ui/screens/todo_screen/shop_page/shop_page.dart';
 import 'package:todo_list/ui/screens/todo_screen/work_page/work_page.dart';
 import 'package:todo_list/widgets/app_nav_bar.dart';
+import 'package:todo_list/widgets/drawer_widget.dart';
 import 'package:todo_list/widgets/tab_item_widget.dart';
 
 class TodoScreen extends StatelessWidget {
@@ -15,22 +16,10 @@ class TodoScreen extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        drawer: const DrawerWidget(),
         backgroundColor: AppColors.backgroundLite,
         bottomNavigationBar: const AppNavBar(current: 0),
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => Drawer(
-              backgroundColor: AppColors.backgroundLite,
-              child: Container(
-                height: 200,
-                width: 200,
-              ),
-            ),
-            icon: const Icon(
-              Icons.dehaze,
-              color: AppColors.secendary,
-            ),
-          ),
           title: const Text(
             'Список дел',
             style: TextStyle(
